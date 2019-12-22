@@ -38,7 +38,6 @@ public class GameViewController implements Initializable {
     private Dice dice1;
     private Dice dice2;
 
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Draw Moving Path
