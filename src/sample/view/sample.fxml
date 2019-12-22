@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane fx:id="parentView" prefHeight="500.0" prefWidth="800.0" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controller.Controller">
+   <children>
+      <VBox layoutX="502.0" prefHeight="500.0" prefWidth="300.0">
+         <children>
+            <Button mnemonicParsing="false" text="Roll dices" fx:id="rollDicesBtn"/>
+            <Button mnemonicParsing="false" text="Die 1" fx:id="chooseDice1" disable="true"/>
+            <Button mnemonicParsing="false" text="Die 2" fx:id="chooseDice2" disable="true"/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Player here" fx:id="playerText"/>
+         </children></VBox>
+   </children>
+</AnchorPane>

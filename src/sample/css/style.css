@@ -1,0 +1,5 @@
+.game {
+    -fx-background-image: url("../resources/ludo_board.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 100% 100%;
+}
