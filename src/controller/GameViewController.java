@@ -1,4 +1,4 @@
-package sample.controller;
+package controller;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -6,18 +6,20 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
-import sample.Main;
-import sample.model.*;
+import model.*;
 
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
-public class Controller implements Initializable {
+public class GameViewController implements Initializable {
 
     private static final int CIRCLE_RADIUS = 16;
+    private static final Paint[] COLORS = {Color.RED, Color.BLUE, Color.GOLD, Color.GREEN};
 
     @FXML
     AnchorPane parentView;
@@ -29,12 +31,12 @@ public class Controller implements Initializable {
     Button chooseDice2;
     @FXML Text playerText;
 
-    int circleNumber = 1;
+    private int circleNumber = 1;
     private HashMap<Integer, CirclePosition> circleHashMap = new HashMap<>();
     private ArrayList<Player> players = new ArrayList<>();
     private int currentPlayerNumber;
-    private Die die1;
-    private Die die2;
+    private Dice dice1;
+    private Dice dice2;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -60,10 +62,10 @@ public class Controller implements Initializable {
             rollDicesBtn.setVisible(false);
 
             // Random and display
-            die1 = new Die();
-            chooseDice1.setText(die1.getValue() + "");
-            die2 = new Die();
-            chooseDice2.setText(die2.getValue() + "");
+            dice1 = new Dice();
+            chooseDice1.setText(dice1.getValue() + "");
+            dice2 = new Dice();
+            chooseDice2.setText(dice2.getValue() + "");
 
             startTurn();
         };
@@ -71,38 +73,38 @@ public class Controller implements Initializable {
 
     private void startTurn() {
 
-        chooseDice1.setOnMouseClicked(onSelectDice(die1, die2));
-        chooseDice2.setOnMouseClicked(onSelectDice(die2, die1));
+        chooseDice1.setOnMouseClicked(onSelectDice(dice1, dice2));
+        chooseDice2.setOnMouseClicked(onSelectDice(dice2, dice1));
 
         checkDices();
 
-        if (!die1.isCanUse() && !die2.isCanUse()) { // If there is no way to move, end moving, switch player
+        if (!dice1.canUse() && !dice2.canUse()) { // If there is no way to move, end moving, switch player
             endTurn();
         }
     }
 
     private void checkDices() {
-        die1.setCanUse(haveMovingPossibility(die1.getValue()));
-        die2.setCanUse(haveMovingPossibility(die2.getValue()));
+        dice1.setCanUse(haveMovingPossibility(dice1.getValue()));
+        dice2.setCanUse(haveMovingPossibility(dice2.getValue()));
 
-        if (die1.isCanUse() && !die1.isUsed()) {
+        if (dice1.canUse() && !dice1.isUsed()) {
             chooseDice1.setDisable(false);
-        } else if (!die1.isCanUse()) {
+        } else if (!dice1.canUse()) {
             chooseDice1.setDisable(true);
         }
-        if (die2.isCanUse() && !die2.isUsed()) {
+        if (dice2.canUse() && !dice2.isUsed()) {
             chooseDice2.setDisable(false);
-        } else if (!die2.isCanUse()) {
+        } else if (!dice2.canUse()) {
             chooseDice2.setDisable(true);
         }
     }
 
-    private EventHandler onSelectDice(Die die1, Die die2) {
+    private EventHandler onSelectDice(Dice dice1, Dice dice2) {
         return mouseEvent -> {
             if (!horseCanClick) {
                 horseCanClick = true;
-                numberOfStep = die1.getValue();
-                die1.setUsed(true);
+                numberOfStep = dice1.getValue();
+                dice1.setUsed(true);
                 ((Button) mouseEvent.getSource()).setDisable(true);
             }
         };
@@ -113,10 +115,10 @@ public class Controller implements Initializable {
 
         checkDices();
 
-        if (die1.isCanUse() && !die1.isUsed()) return;
-        if (die2.isCanUse() && !die2.isUsed()) return;
+        if (dice1.canUse() && !dice1.isUsed()) return;
+        if (dice2.canUse() && !dice2.isUsed()) return;
 
-        if (die1.getValue() != die2.getValue()) {
+        if (dice1.getValue() != dice2.getValue()) {
             String mess = "End " + players.get(currentPlayerNumber).getColor() + " turn";
             if (currentPlayerNumber == 3) {
                 currentPlayerNumber = 0;
@@ -251,7 +253,7 @@ public class Controller implements Initializable {
 
     private void setupCircle(int x, int y, int number) {
         CirclePosition circle = new CirclePosition(CIRCLE_RADIUS, x, y, number);
-        circle.setStroke(Main.COLORS[number/12 != 4 ? number/12 : 0]);
+        circle.setStroke(COLORS[number/12 != 4 ? number/12 : 0]);
 
         circle.setOnMouseClicked(mouseEvent -> {
             System.out.println(number);

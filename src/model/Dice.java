@@ -1,15 +1,15 @@
-package sample.model;
+package model;
 
-public class Die {
+public class Dice {
     private boolean canUse;
     private boolean isUsed;
     private int value;
 
-    public Die() {
+    public Dice() {
         this.value = (int) (Math.random() * 6) + 1;
     }
 
-    public boolean isCanUse() {
+    public boolean canUse() {
         return canUse;
     }
 
